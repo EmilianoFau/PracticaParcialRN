@@ -14,15 +14,27 @@ interface Planet {
 
 const Index = () => {
   const [planets, setPlanets] = useState<Planet[]>([]);
+  const [originalPlanets, setOriginalPlanets] = useState<Planet[]>([]);
+
   useEffect(() => {
     const fetchInfo = async () => {
       const response = await getInfo();
       setPlanets(response);
+      setOriginalPlanets(response);
     };
 
     fetchInfo();
   }, []);
   console.log(planets);
+
+  const handleSortByMoons = () => {
+    const sortedPlanets = [...planets].sort((a, b) => b.moons - a.moons);
+    setPlanets(sortedPlanets);
+  };
+
+  const handleResetOrder = () => {
+    setPlanets(originalPlanets);
+  };
 
   return (
     <ScrollView
@@ -75,7 +87,7 @@ const Index = () => {
               style={{
                 backgroundColor: "white",
                 borderRadius: 10,
-                width: "90%",
+                width: "85%",
                 margin: 16,
                 padding: 16,
               }}
@@ -91,6 +103,14 @@ const Index = () => {
             </View>
           );
         })}
+      <View style={styles.actionButtonsContainer}>
+        <TouchableOpacity style={styles.sortButton} onPress={handleSortByMoons}>
+          <Text style={styles.buttonText}>Ordenar por lunas</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.resetButton} onPress={handleResetOrder}>
+          <Text style={styles.buttonText}>Restablecer</Text>
+        </TouchableOpacity>
+      </View>
     </ScrollView>
   );
 };
@@ -127,6 +147,25 @@ const styles = StyleSheet.create({
     },
     iosButtonText: {
       color: "black",
+      fontWeight: "bold",
+    },
+    actionButtonsContainer: {
+      flexDirection: "row",
+      justifyContent: "space-around",
+      marginBottom: 16,
+    },
+    sortButton: {
+      backgroundColor: "#030237",
+      padding: 10,
+      borderRadius: 8,
+    },
+    resetButton: {
+      backgroundColor: "#030237",
+      padding: 10,
+      borderRadius: 8,
+    },
+    buttonText: {
+      color: "white",
       fontWeight: "bold",
     },
   });
