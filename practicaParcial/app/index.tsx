@@ -9,6 +9,7 @@ interface Planet {
     description: string;
     moons: number;
     moon_names: string[];
+    image?: string;
 }
 
 const Index = () => {

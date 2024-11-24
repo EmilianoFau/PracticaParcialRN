@@ -10,6 +10,7 @@ const AddPlanet = () => {
     description: "",
     moons: 0,
     moon_names: [] as string[],
+    image: "",
   });
 
   const handleAddPlanet = async () => {
