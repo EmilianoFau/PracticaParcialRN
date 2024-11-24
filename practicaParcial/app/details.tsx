@@ -22,6 +22,7 @@ const Details = () => {
     description: "",
     moons: 0,
     moon_names: "",
+    image: "",
   });
 
   useEffect(() => {
@@ -31,10 +32,11 @@ const Details = () => {
         if (!response) throw new Error("Planet not found");
         setPlanet(response);
         setEditValues({
-          name: response.name,
-          description: response.description,
-          moons: response.moons,
+          name: response.name || "",
+          description: response.description || "",
+          moons: response.moons || "",
           moon_names: response.moon_names?.join(", ") || "",
+          image: response.image || "",
         });
       } catch (error) {
         Alert.alert("Error", "Planet not found or error loading details.");
@@ -72,7 +74,12 @@ const Details = () => {
         ...editValues,
         moons: parseInt(editValues.moons.toString(), 10),
         moon_names: editValues.moon_names.split(",").map((moon) => moon.trim()),
+        image: editValues.image.trim() || planet?.image,
+        
       };
+
+      console.log(updatedPlanet);
+      console.log(updatedPlanet.image);
 
       const response = await updatePlanetById(params.id as string, updatedPlanet);
 
@@ -171,6 +178,12 @@ const Details = () => {
               value={editValues.moon_names}
               onChangeText={(text) => setEditValues((prev) => ({ ...prev, moon_names: text }))}
               placeholder="Moons (comma-separated)"
+            />
+            <TextInput
+              style={styles.input}
+              value={editValues.image}
+              onChangeText={(text) => setEditValues((prev) => ({ ...prev, image: text }))}
+              placeholder="Image URL"
             />
             <View style={styles.buttonContainer}>
               <TouchableOpacity style={styles.cancelButton} onPress={() => setIsEditing(false)}>

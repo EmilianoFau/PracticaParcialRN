@@ -88,6 +88,7 @@ export const getInfo = async () => {
     description: string;
     moons: number;
     moon_names: string[];
+    image?: string;
   }) => {
     const URL = `http://localhost:8000/planets/${id}`;
     try {
